@@ -83,7 +83,7 @@ function App() {
           </p>
         ))}
       </div>
-      <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center gap-4 px-6 m-6">
+      <div className="fixed bottom-0 left-0 z-20 flex flex-row items-end justify-center gap-4 px-6 m-6">
         <div className="flex flex-col gap-1">
           <CityAutocomplete
             value={ac}
