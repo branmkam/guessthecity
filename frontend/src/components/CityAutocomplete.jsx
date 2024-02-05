@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 export default function CityAutocomplete(props) {
-  const { c, value, setValue, onChange, selected, setSelected, guesses } =
+  const { c, value, setValue, onChange, selected, setSelected, guesses, setGuesses } =
     props;
 
-  const [ids, setIds] = useState(Object.keys(c.city_ascii));
+  let ids = Object.keys(c.city_ascii);
 
   return (
     <div className="z-40">
@@ -22,8 +22,9 @@ export default function CityAutocomplete(props) {
               <div
                 onClick={() => {
                   if (!guesses.includes(id)) {
-                    setSelected(id);
-                    setValue(c.city_ascii[id]);
+                    setSelected(null);
+                    setValue('');
+                    setGuesses((g) => [...g, id])
                   }
                 }}
                 key={"disp" + id}

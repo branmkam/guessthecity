@@ -19,7 +19,14 @@ function App() {
   const [end, setEnd] = useState(false);
 
   function randomId() {
-    return ids[parseInt(Math.random() * ids.length)];
+    //every country equal chance
+    const countries = Array.from(new Set(Object.values(c.country)));
+    console.log(countries);
+    let country = countries[parseInt(Math.random() * countries.length)];
+    let cities = ids.filter(i => c.country[i] == country);
+    console.log(cities);
+    let chosen = cities[parseInt(Math.random() * cities.length)];
+    return chosen;
   }
 
   const markerIcon = new L.Icon({
@@ -97,9 +104,9 @@ function App() {
       )}
 
       {guesses.length > 0 && (
-        <div className="overflow-y-auto max-h-80 fixed z-40 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
+        <div className="overflow-y-auto max-h-80 fixed z-40 max-w-56 md:max-w-80 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
           {guesses.map((g, i) => (
-            <p key={"name" + i} className="z-40 text-white">
+            <p key={"name" + i} className="z-40 text-right text-white md:w-80">
               {i + 1}. {c.city_ascii[g]},{" "}
               {c.admin_name[g] && c.admin_name[g] + ", "} {c.country[g]}
             </p>
@@ -107,7 +114,16 @@ function App() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 z-20 flex flex-row items-end justify-center gap-4 px-6 m-6">
+      <button
+        onClick={() => {
+          setEnd(true);
+        }}
+        className="fixed z-40 px-4 py-2 text-white bg-red-600 rounded-lg bottom-6 right-2 hover:bg-red-800 "
+      >
+        give up
+      </button>
+
+      <div className="fixed z-20 gap-4 bottom-2 left-2">
         <div className="flex flex-col gap-1">
           <CityAutocomplete
             value={ac}
@@ -120,6 +136,7 @@ function App() {
             setSelected={setSelected}
             selected={selected}
             guesses={guesses}
+            setGuesses={setGuesses}
           />
           <div className="flex flex-row flex-wrap items-center justify-start gap-1 w-96">
             {/* right continent */}
@@ -148,27 +165,7 @@ function App() {
               )}
           </div>
         </div>
-        <button
-          onClick={() => {
-            if (selected && !guesses.includes(selected)) {
-              //not in array already
-              setGuesses((g) => [...g, selected]);
-            }
-            setSelected(null);
-            setAc("");
-          }}
-          className="px-4 py-2 bg-blue-300 rounded-lg hover:bg-blue-600 "
-        >
-          select
-        </button>{" "}
-        <button
-          onClick={() => {
-            setEnd(true);
-          }}
-          className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-800 "
-        >
-          give up
-        </button>
+
         {/* <button
           onClick={() => {
             setId(randomId());
