@@ -1,15 +1,23 @@
 import { useState } from "react";
 
 export default function CityAutocomplete(props) {
-  const { c, value, setValue, onChange, selected, setSelected, guesses, setGuesses } =
-    props;
+  const {
+    c,
+    value,
+    setValue,
+    onChange,
+    selected,
+    setSelected,
+    guesses,
+    setGuesses,
+  } = props;
 
   let ids = Object.keys(c.city_ascii);
 
   return (
     <div className="z-40">
       {value && !selected && (
-        <div className="z-40 overflow-y-auto bg-white rounded-md w-96 max-h-80">
+        <div className="z-40 w-48 overflow-y-auto text-[9px] sm:text-[12px] md:text-base bg-white rounded-md sm:w-60 md:w-96 max-h-48 sm:max-h-64 md:max-h-80">
           {ids
             .filter((id) =>
               c.city_ascii[id]
@@ -23,8 +31,8 @@ export default function CityAutocomplete(props) {
                 onClick={() => {
                   if (!guesses.includes(id)) {
                     setSelected(null);
-                    setValue('');
-                    setGuesses((g) => [...g, id])
+                    setValue("");
+                    setGuesses((g) => [...g, id]);
                   }
                 }}
                 key={"disp" + id}
@@ -34,15 +42,18 @@ export default function CityAutocomplete(props) {
                     " hover:bg-white hover:text-slate-400 text-slate-400 hover:cursor-default")
                 }
               >
-                <span>{c.city_ascii[id]}</span>
-                <span>{(c.admin_name[id] && c.admin_name[id] + ", ") + c.country[id]}</span>
+                <span className="text-left">{c.city_ascii[id]}</span>
+                <span className='text-right'>
+                  {(c.admin_name[id] && c.admin_name[id] + ", ") +
+                    c.country[id]}
+                </span>
               </div>
             ))}
         </div>
       )}
       <input
         value={value}
-        className="p-1 text-xl border-2 border-black rounded-lg w-96"
+        className="w-48 p-1 border-2 border-black rounded-lg sm:text-lg md:text-xl sm:w-60 md:w-96"
         onChange={onChange}
         placeholder="Type city name here..."
       />

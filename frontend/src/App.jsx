@@ -22,7 +22,7 @@ function App() {
     //every region equal chance
     const areas = Array.from(new Set(Object.values(c.admin_name)));
     let area = areas[parseInt(Math.random() * areas.length)];
-    let cities = ids.filter(i => c.admin_name[i] == area);
+    let cities = ids.filter((i) => c.admin_name[i] == area);
     let chosen = cities[parseInt(Math.random() * cities.length)];
     return chosen;
   }
@@ -53,9 +53,37 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <p className="fixed z-50 text-xl font-bold text-green-500 md:text-2xl lg:text-5xl top-0 left-0 p-3 rounded-xl bg-[#00000099]">
-        Guess the City
-      </p>
+      <div className="fixed z-50 top-0 right-0 p-3 text-right flex flex-col rounded-xl bg-[#00000099]">
+        <p className="z-50 text-xl font-bold text-right text-green-500 md:text-2xl lg:text-5xl">
+          Guess the City
+        </p>
+        <a
+          href="https://brankam.com"
+          rel="noreferrer"
+          target="_blank"
+          className="pt-1 pb-3 text-sm text-blue-400 underline hover:text-blue-200"
+        >
+          by Brandon Kaminski
+        </a>
+        <p className="text-white underline hover:cursor-pointer md:hidden">
+          {guesses.length} tries
+        </p>
+        {guesses.length > 0 && (
+          <p className="hidden px-2 text-xl text-green-600 md:block">
+            Guesses:
+          </p>
+        )}
+        <div className="hidden overflow-y-auto md:flex md:flex-col md:gap-1 max-h-16 md:max-h-32">
+          {guesses.map((g, i) => (
+            <p key={"name" + i} className="z-50 px-1 text-white">
+              {i + 1}. {c.city_ascii[g]},{" "}
+              {c.admin_name[g] && c.admin_name[g] + ", "} {c.country[g]}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <div className="z-40 top-8"></div>
 
       {/* give up */}
       {end && (
@@ -101,16 +129,37 @@ function App() {
         </div>
       )}
 
-      {guesses.length > 0 && (
-        <div className="overflow-y-auto max-h-80 fixed z-40 max-w-56 md:max-w-80 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
-          {guesses.map((g, i) => (
-            <p key={"name" + i} className="z-40 text-right text-white md:w-80">
-              {i + 1}. {c.city_ascii[g]},{" "}
-              {c.admin_name[g] && c.admin_name[g] + ", "} {c.country[g]}
-            </p>
-          ))}
-        </div>
-      )}
+      {guesses.length > 0 &&
+        guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
+          <div className="fixed z-40 flex items-end p-2 overflow-y-auto max-h-80 max-w-40 md:max-w-80 top-2 left-2">
+            <div className="flex flex-col flex-wrap items-start gap-1">
+              {/* right continent */}
+              {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
+                <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                  {c.continent[id]}
+                </p>
+              )}
+              {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
+                <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                  {c.region[id]}
+                </p>
+              )}
+              {/* right country */}
+              {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
+                <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                  {c.country[id]}
+                </p>
+              )}
+              {/* right subdivision */}
+              {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
+                guesses.map((i) => c.country[i]).includes(c.country[id]) && (
+                  <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                    {c.admin_name[id]}
+                  </p>
+                )}
+            </div>
+          </div>
+        )}
 
       <button
         onClick={() => {
@@ -121,8 +170,35 @@ function App() {
         give up
       </button>
 
+      <div className="flex flex-row flex-wrap items-center justify-start gap-1 w-96">
+        {/* right continent */}
+        {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
+          <p className="px-2 py-1 text-sm text-white bg-green-800">
+            {c.continent[id]}
+          </p>
+        )}
+        {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
+          <p className="px-2 py-1 text-sm text-white bg-green-800">
+            {c.region[id]}
+          </p>
+        )}
+        {/* right country */}
+        {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
+          <p className="px-2 py-1 text-sm text-white bg-green-800">
+            {c.country[id]}
+          </p>
+        )}
+        {/* right subdivision */}
+        {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
+          guesses.map((i) => c.country[i]).includes(c.country[id]) && (
+            <p className="px-2 py-1 text-sm text-white bg-green-800">
+              {c.admin_name[id]}
+            </p>
+          )}
+      </div>
+
       <div className="fixed z-20 gap-4 bottom-2 left-2">
-        <div className="flex flex-col gap-1">
+        <div className="">
           <CityAutocomplete
             value={ac}
             setValue={setAc}
@@ -136,32 +212,6 @@ function App() {
             guesses={guesses}
             setGuesses={setGuesses}
           />
-          <div className="flex flex-row flex-wrap items-center justify-start gap-1 w-96">
-            {/* right continent */}
-            {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
-              <p className="px-2 py-1 text-sm text-white bg-green-800">
-                {c.continent[id]}
-              </p>
-            )}
-            {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
-              <p className="px-2 py-1 text-sm text-white bg-green-800">
-                {c.region[id]}
-              </p>
-            )}
-            {/* right country */}
-            {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-              <p className="px-2 py-1 text-sm text-white bg-green-800">
-                {c.country[id]}
-              </p>
-            )}
-            {/* right subdivision */}
-            {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
-              guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-                <p className="px-2 py-1 text-sm text-white bg-green-800">
-                  {c.admin_name[id]}
-                </p>
-              )}
-          </div>
         </div>
 
         {/* <button
@@ -183,7 +233,7 @@ function App() {
         zoomControl={false}
       >
         <TileLayer
-          attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          attribution="Tiles &copy; Esri"
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
         <Marker icon={markerIcon} position={[lat, lng]}></Marker>
