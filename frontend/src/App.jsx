@@ -150,7 +150,7 @@ function App() {
         </div>
         <button
           onClick={() => {
-            if (!guesses.includes(selected)) {
+            if (selected && !guesses.includes(selected)) {
               //not in array already
               setGuesses((g) => [...g, selected]);
             }
