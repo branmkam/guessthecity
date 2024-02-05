@@ -41,7 +41,6 @@ function App() {
 
   //winner
   useEffect(() => {
-    console.log(guesses, id);
     if (guesses.includes(id.toString())) {
       setEnd(true);
     }
