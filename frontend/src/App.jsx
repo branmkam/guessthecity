@@ -58,7 +58,7 @@ function App() {
           Guess the City
         </p>
         <a
-          href="https://brankam.com"
+          href="#"
           rel="noreferrer"
           target="_blank"
           className="pt-1 pb-3 text-sm text-blue-400 underline hover:text-blue-200"
