@@ -7,7 +7,7 @@ export default function CityAutocomplete(props) {
   const [ids, setIds] = useState(Object.keys(c.city_ascii));
 
   return (
-    <div className="z-40 gap-0">
+    <div className="z-40">
       {value && !selected && (
         <div className="z-40 overflow-y-scroll w-96 max-h-80">
           {ids
@@ -41,7 +41,7 @@ export default function CityAutocomplete(props) {
       )}
       <input
         value={value}
-        className="text-xl w-96"
+        className="p-1 text-xl border-2 border-black rounded-lg w-96"
         onChange={onChange}
         placeholder="Type city name here..."
       />

@@ -40,6 +40,9 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
+
+      <p className="fixed z-50 text-xl font-bold text-green-500 md:text-2xl lg:text-5xl top-0 left-0 p-3 rounded-xl bg-[#00000099]">Guess the City</p>
+
       {/* give up */}
       {end && (
         <div className="z-50 flex flex-col items-center justify-center gap-6 p-10 text-center rounded-xl bg-slate-200">
@@ -80,7 +83,7 @@ function App() {
           </p>
         ))}
       </div>
-      <div className="fixed bottom-0 left-0 z-20 flex flex-row items-end justify-center gap-4 px-6 m-6">
+      <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center gap-4 px-6 m-6">
         <div className="flex flex-col gap-1">
           <CityAutocomplete
             value={ac}
