@@ -14,7 +14,7 @@ function App() {
   const lng = c.lng[id];
   const [ac, setAc] = useState("");
   const [guesses, setGuesses] = useState([]);
-  const [giveUp, setGiveUp] = useState(false);
+  const [end, setEnd] = useState(false);
 
   function randomId() {
     return ids[parseInt(Math.random() * ids.length)];
@@ -30,14 +30,47 @@ function App() {
     return null;
   };
 
+  //winner
   useEffect(() => {
-    console.log(guesses);
-  }, [guesses]);
+    console.log(guesses,id);
+    if(guesses.includes(id.toString())) {
+      setEnd(true);
+    }
+  }, [guesses, id]);
 
   return (
-    <div>
-
-      {/* give up */ }
+    <div className="flex flex-col items-center justify-center w-screen h-screen">
+      {/* give up */}
+      {end && (
+        <div className="z-50 flex flex-col items-center justify-center gap-6 p-10 text-center rounded-xl bg-slate-200">
+          {guesses.includes(id.toString()) ? (
+            <p className="text-5xl text-green-700">
+              You got it in <br /> {guesses.length} guess{guesses.length !== 1 && 'es'}!
+            
+            </p>
+          ) : (
+            <p className="text-5xl text-red-600">Good try!</p>
+          )}
+          <p className="text-2xl">The city was:</p>
+          <p className="text-3xl text-slate-900">
+            {c.city_ascii[id]}, {c.admin_name[id] && c.admin_name[id] + ", "}{" "}
+            {c.country[id]}
+          </p>
+          <p className="text-lg">Metro Population of {c.population[id]}</p>
+          <button
+            onClick={() => {
+              setSelected(null);
+              setAc("");
+              setEnd(false);
+              setId(randomId());
+              setGuesses([]);
+            }}
+            className="px-4 py-2 text-xl text-white bg-blue-700 hover:bg-blue-500"
+          >
+            Play again
+          </button>
+        </div>
+      )}
 
       <div className="fixed z-40 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
         {guesses.map((g, i) => (
@@ -61,8 +94,7 @@ function App() {
             selected={selected}
             guesses={guesses}
           />
-          <div className="flex flex-row items-center justify-start gap-1">
-            <p className="text-white">correct: </p>
+          <div className="flex flex-row flex-wrap items-center justify-start gap-1 w-96">
             {/* right continent */}
             {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
               <p className="px-2 py-1 text-sm text-white bg-green-800">
@@ -82,7 +114,7 @@ function App() {
             )}
             {/* right subdivision */}
             {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
-              guesses.map((i) => c.admin_name[i]).includes(c.country[id]) && (
+              guesses.map((i) => c.country[i]).includes(c.country[id]) && (
                 <p className="px-2 py-1 text-sm text-white bg-green-800">
                   {c.admin_name[id]}
                 </p>
@@ -104,7 +136,7 @@ function App() {
         </button>{" "}
         <button
           onClick={() => {
-           
+            setEnd(true);
           }}
           className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-800 "
         >
