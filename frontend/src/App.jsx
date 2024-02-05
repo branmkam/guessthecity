@@ -19,12 +19,10 @@ function App() {
   const [end, setEnd] = useState(false);
 
   function randomId() {
-    //every country equal chance
-    const countries = Array.from(new Set(Object.values(c.country)));
-    console.log(countries);
-    let country = countries[parseInt(Math.random() * countries.length)];
-    let cities = ids.filter(i => c.country[i] == country);
-    console.log(cities);
+    //every region equal chance
+    const areas = Array.from(new Set(Object.values(c.admin_name)));
+    let area = areas[parseInt(Math.random() * areas.length)];
+    let cities = ids.filter(i => c.admin_name[i] == area);
     let chosen = cities[parseInt(Math.random() * cities.length)];
     return chosen;
   }
