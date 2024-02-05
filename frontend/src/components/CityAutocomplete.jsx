@@ -9,7 +9,7 @@ export default function CityAutocomplete(props) {
   return (
     <div className="z-40">
       {value && !selected && (
-        <div className="z-40 overflow-y-scroll w-96 max-h-80">
+        <div className="z-40 overflow-y-auto bg-white rounded-md w-96 max-h-80">
           {ids
             .filter((id) =>
               c.city_ascii[id]
@@ -28,7 +28,7 @@ export default function CityAutocomplete(props) {
                 }}
                 key={"disp" + id}
                 className={
-                  "flex flex-row justify-between hover:cursor-pointer bg-white hover:text-white hover:bg-blue-600 " +
+                  "flex flex-row px-2 justify-between hover:cursor-pointer bg-white hover:text-white hover:bg-blue-600 " +
                   (guesses.includes(id) &&
                     " hover:bg-white hover:text-slate-400 text-slate-400 hover:cursor-default")
                 }

@@ -4,6 +4,8 @@ import c from "../../data/worldcities.json";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import CityAutocomplete from "./components/CityAutocomplete";
+import L from "leaflet";
+import marker from "./assets/marker.svg";
 
 const ids = Object.keys(c["city_ascii"]);
 
@@ -20,6 +22,13 @@ function App() {
     return ids[parseInt(Math.random() * ids.length)];
   }
 
+  const markerIcon = new L.Icon({
+    iconUrl: marker,
+    iconRetinaUrl: marker,
+    iconAnchor: [16, 45],
+    iconSize: [32, 45],
+  });
+
   const RecenterAutomatically = () => {
     const map = useMap();
     useEffect(() => {
@@ -32,33 +41,46 @@ function App() {
 
   //winner
   useEffect(() => {
-    console.log(guesses,id);
-    if(guesses.includes(id.toString())) {
+    console.log(guesses, id);
+    if (guesses.includes(id.toString())) {
       setEnd(true);
     }
   }, [guesses, id]);
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
-
-      <p className="fixed z-50 text-xl font-bold text-green-500 md:text-2xl lg:text-5xl top-0 left-0 p-3 rounded-xl bg-[#00000099]">Guess the City</p>
+      <p className="fixed z-50 text-xl font-bold text-green-500 md:text-2xl lg:text-5xl top-0 left-0 p-3 rounded-xl bg-[#00000099]">
+        Guess the City
+      </p>
 
       {/* give up */}
       {end && (
         <div className="z-50 flex flex-col items-center justify-center gap-6 p-10 text-center rounded-xl bg-slate-200">
           {guesses.includes(id.toString()) ? (
             <p className="text-5xl text-green-700">
-              You got it in <br /> {guesses.length} guess{guesses.length !== 1 && 'es'}!
-            
+              You got it in <br /> {guesses.length} guess
+              {guesses.length !== 1 && "es"}!
             </p>
           ) : (
             <p className="text-5xl text-red-600">Good try!</p>
           )}
           <p className="text-2xl">The city was:</p>
-          <p className="text-3xl text-slate-900">
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href={
+              "https://www.google.com/maps/search/" +
+              c.city_ascii[id] +
+              "," +
+              (c.admin_name[id] && c.admin_name[id]) +
+              ", " +
+              c.country[id]
+            }
+            className="text-3xl underline hover:text-red-500 text-slate-900"
+          >
             {c.city_ascii[id]}, {c.admin_name[id] && c.admin_name[id] + ", "}{" "}
             {c.country[id]}
-          </p>
+          </a>
           <p className="text-lg">Metro Population of {c.population[id]}</p>
           <button
             onClick={() => {
@@ -75,14 +97,17 @@ function App() {
         </div>
       )}
 
-      <div className="fixed z-40 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
-        {guesses.map((g, i) => (
-          <p key={"name" + i} className="z-40 text-white">
-            {i + 1}. {c.city_ascii[g]},{" "}
-            {c.admin_name[g] && c.admin_name[g] + ", "} {c.country[g]}
-          </p>
-        ))}
-      </div>
+      {guesses.length > 0 && (
+        <div className="overflow-y-auto max-h-80 fixed z-40 flex p-2 flex-col bg-[#00000099] items-end top-2 right-2">
+          {guesses.map((g, i) => (
+            <p key={"name" + i} className="z-40 text-white">
+              {i + 1}. {c.city_ascii[g]},{" "}
+              {c.admin_name[g] && c.admin_name[g] + ", "} {c.country[g]}
+            </p>
+          ))}
+        </div>
+      )}
+
       <div className="fixed bottom-0 left-0 z-20 flex flex-row items-end justify-center gap-4 px-6 m-6">
         <div className="flex flex-col gap-1">
           <CityAutocomplete
@@ -167,7 +192,7 @@ function App() {
           attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
-        <Marker position={[lat, lng]}></Marker>
+        <Marker icon={markerIcon} position={[lat, lng]}></Marker>
         <RecenterAutomatically lat={lat} lng={lng} />
       </MapContainer>
     </div>
