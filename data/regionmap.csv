@@ -1,0 +1,168 @@
+,iso3,reg,regname
+0,JPN,4,East Asia
+1,IDN,15,South East Asia
+2,IND,14,South Asia
+3,CHN,4,East Asia
+4,PHL,15,South East Asia
+5,BRA,13,South America
+6,KOR,4,East Asia
+7,MEX,1,Central America
+8,EGY,9,Northern Africa
+9,USA,8,North America
+10,BGD,14,South Asia
+11,THA,15,South East Asia
+12,RUS,10,Northern Asia
+13,ARG,13,South America
+14,NGA,22,Western Africa
+15,TUR,17,South West Asia
+16,PAK,14,South Asia
+17,VNM,15,South East Asia
+18,IRN,17,South West Asia
+19,COD,0,Central Africa
+20,GBR,23,Western Europe
+21,FRA,23,Western Europe
+22,PER,13,South America
+23,TWN,4,East Asia
+24,AGO,19,Southern Africa
+25,MYS,15,South East Asia
+26,ZAF,19,Southern Africa
+27,COL,13,South America
+28,TZA,5,Eastern Africa
+29,SDN,9,Northern Africa
+30,HKG,4,East Asia
+31,SAU,17,South West Asia
+32,CHL,13,South America
+33,ESP,18,South West Europe
+34,IRQ,17,South West Asia
+35,SGP,15,South East Asia
+36,CMR,22,Western Africa
+37,KEN,5,Eastern Africa
+38,CAN,8,North America
+39,MMR,15,South East Asia
+40,CIV,22,Western Africa
+41,AUS,12,Pacific
+42,DEU,23,Western Europe
+43,MAR,9,Northern Africa
+44,AFG,14,South Asia
+45,SOM,5,Eastern Africa
+46,JOR,17,South West Asia
+47,DZA,9,Northern Africa
+48,GHA,22,Western Africa
+49,ARE,17,South West Asia
+50,BOL,13,South America
+51,GRC,16,South East Europe
+52,ETH,5,Eastern Africa
+53,KWT,17,South West Asia
+54,HUN,3,Central Europe
+55,UKR,6,Eastern Europe
+56,YEM,17,South West Asia
+57,GTM,1,Central America
+58,ITA,20,Southern Europe
+59,PRK,4,East Asia
+60,ECU,13,South America
+61,PRT,18,South West Europe
+62,VEN,13,South America
+63,MDG,7,Indian Ocean
+64,DOM,21,West Indies
+65,UZB,2,Central Asia
+66,ZMB,19,Southern Africa
+67,BFA,22,Western Africa
+68,LKA,14,South Asia
+69,AZE,17,South West Asia
+70,ZWE,19,Southern Africa
+71,CUB,21,West Indies
+72,KHM,15,South East Asia
+73,MLI,22,Western Africa
+74,BLR,6,Eastern Europe
+75,AUT,3,Central Europe
+76,SYR,17,South West Asia
+77,KAZ,2,Central Asia
+78,PRI,21,West Indies
+79,MWI,19,Southern Africa
+80,ROU,16,South East Europe
+81,POL,6,Eastern Europe
+82,COG,0,Central Africa
+83,BEL,23,Western Europe
+84,URY,13,South America
+85,UGA,5,Eastern Africa
+86,HND,1,Central America
+87,GIN,22,Western Africa
+88,SWE,11,Northern Europe
+89,BGR,16,South East Europe
+90,CRI,1,Central America
+91,PAN,1,Central America
+92,NLD,23,Western Europe
+93,SEN,22,Western Africa
+94,OMN,17,South West Asia
+95,ISR,17,South West Asia
+96,MNG,10,Northern Asia
+97,SRB,16,South East Europe
+98,DNK,11,Northern Europe
+99,NZL,12,Pacific
+100,CZE,3,Central Europe
+101,LBY,9,Northern Africa
+102,FIN,11,Northern Europe
+103,QAT,17,South West Asia
+104,MOZ,19,Southern Africa
+105,IRL,23,Western Europe
+106,RWA,0,Central Africa
+107,GEO,17,South West Asia
+108,TCD,0,Central Africa
+109,BDI,0,Central Africa
+110,KGZ,2,Central Asia
+111,ARM,17,South West Asia
+112,MRT,22,Western Africa
+113,NOR,11,Northern Europe
+114,TUN,9,Northern Africa
+115,NIC,1,Central America
+116,NER,22,Western Africa
+117,LBR,22,Western Africa
+118,HTI,21,West Indies
+119,NPL,14,South Asia
+120,ERI,5,Eastern Africa
+121,SLE,22,Western Africa
+122,LAO,15,South East Asia
+123,LVA,6,Eastern Europe
+124,CAF,0,Central Africa
+125,TJK,2,Central Asia
+126,TGO,22,Western Africa
+127,TKM,2,Central Asia
+128,HRV,16,South East Europe
+129,GAB,22,Western Africa
+130,BEN,22,Western Africa
+131,LTU,6,Eastern Europe
+132,MDA,6,Eastern Europe
+133,PNG,12,Pacific
+134,MKD,16,South East Europe
+135,DJI,5,Eastern Africa
+136,XGZ,17,South West Asia
+137,JAM,21,West Indies
+138,SLV,1,Central America
+139,PRY,13,South America
+140,SSD,0,Central Africa
+141,LSO,19,Southern Africa
+142,GNB,22,Western Africa
+143,MLT,20,Southern Europe
+144,SVK,3,Central Europe
+145,BHR,17,South West Asia
+146,EST,6,Eastern Europe
+147,LBN,17,South West Asia
+148,ALB,16,South East Europe
+149,BIH,16,South East Europe
+150,GMB,22,Western Africa
+151,CYP,17,South West Asia
+152,NAM,19,Southern Africa
+153,REU,7,Indian Ocean
+154,SVN,16,South East Europe
+155,BHS,21,West Indies
+156,MTQ,21,West Indies
+157,BWA,19,Southern Africa
+158,SUR,13,South America
+159,TLS,15,South East Asia
+160,GUY,13,South America
+161,MAC,4,East Asia
+162,CHE,3,Central Europe
+163,MUS,7,Indian Ocean
+164,GLP,21,West Indies
+165,GNQ,22,Western Africa
+166,XWB,17,South West Asia

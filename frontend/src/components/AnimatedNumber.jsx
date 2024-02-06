@@ -6,7 +6,7 @@ import { erf } from "mathjs";
 export default function AnimatedNumber(props) {
   const { className, end, start = 0, duration = 1 } = props;
 
-  const dx = 40; //20 ms update
+  const dx = 40; //40 ms update
 
   const [num, setNum] = useState(start);
   const [t, setT] = useState(0);
