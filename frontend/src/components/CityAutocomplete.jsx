@@ -15,9 +15,9 @@ export default function CityAutocomplete(props) {
   let ids = Object.keys(c.city_ascii);
 
   return (
-    <div className="z-40">
+    <div>
       {value && !selected && (
-        <div className="z-40 w-48 overflow-y-auto text-[9px] sm:text-[12px] md:text-base bg-white rounded-md sm:w-60 md:w-96 max-h-48 sm:max-h-64 md:max-h-80">
+        <div className="z-50 w-48 overflow-y-auto text-[9px] sm:text-[12px] md:text-base bg-white rounded-md sm:w-60 md:w-96 max-h-48 sm:max-h-64 md:max-h-80">
           {ids
             .filter((id) =>
               c.city_ascii[id]
@@ -25,7 +25,6 @@ export default function CityAutocomplete(props) {
                 .toLowerCase()
                 .includes(value.trim().toLowerCase())
             )
-            .slice(0, 100)
             .map((id) => (
               <div
                 onClick={() => {

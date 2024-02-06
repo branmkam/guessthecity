@@ -6,17 +6,38 @@ import "leaflet/dist/leaflet.css";
 import CityAutocomplete from "./components/CityAutocomplete";
 import L from "leaflet";
 import marker from "./assets/marker.svg";
+import AnimatedNumber from "./components/AnimatedNumber";
 
 const ids = Object.keys(c["city_ascii"]);
 
 function App() {
-  const [id, setId] = useState(ids[parseInt(Math.random() * ids.length)]);
+  const [id, setId] = useState(1840014557);
   const [selected, setSelected] = useState(null);
   const lat = c.lat[id];
   const lng = c.lng[id];
   const [ac, setAc] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [end, setEnd] = useState(false);
+
+  function calcPts(guesses) {
+    return (
+      -25 * guesses.length +
+      (guesses.includes(id.toString())
+        ? 1025
+        : 100 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
+          100 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
+          350 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
+          (c.admin_name[id]
+            ? 200 *
+              guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id])
+            : 0))
+    );
+  }
+
+  const calcpts = calcPts(guesses);
+  const prevpoints =
+    guesses.length < 1 ? 0 : calcPts(guesses.slice(0, guesses.length - 1));
+  const points = Math.max(0, calcpts);
 
   function randomId() {
     //every region equal chance
@@ -52,9 +73,9 @@ function App() {
   }, [guesses, id]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
+    <div className="flex flex-col items-center justify-center w-screen h-screen ">
       <div className="fixed z-50 top-0 right-0 p-3 text-right flex flex-col rounded-xl bg-[#00000099]">
-        <p className="z-50 text-xl font-bold text-right text-green-500 md:text-2xl lg:text-5xl">
+        <p className="z-50 text-xl font-bold text-right text-green-500 font-catamaran md:text-2xl lg:text-5xl">
           Guess the City
         </p>
         <a
@@ -68,6 +89,7 @@ function App() {
         <p className="text-white underline hover:cursor-pointer md:hidden">
           {guesses.length} tries
         </p>
+
         {guesses.length > 0 && (
           <p className="hidden px-2 text-xl text-green-600 md:block">
             Guesses:
@@ -83,20 +105,26 @@ function App() {
         </div>
       </div>
 
-      <div className="z-40 top-8"></div>
-
       {/* give up */}
       {end && (
-        <div className="z-50 flex flex-col items-center justify-center gap-6 p-10 text-center rounded-xl bg-slate-200">
+        <div className="z-50 flex flex-col items-center justify-center gap-3 p-6 text-center rounded-xl bg-slate-200">
           {guesses.includes(id.toString()) ? (
-            <p className="text-5xl text-green-700">
+            <p className="text-4xl text-green-700 font-catamaran">
               You got it in <br /> {guesses.length} guess
               {guesses.length !== 1 && "es"}!
             </p>
           ) : (
-            <p className="text-5xl text-red-600">Good try!</p>
+            <p className="text-4xl text-red-600 font-catamaran">Good try!</p>
           )}
-          <p className="text-2xl">The city was:</p>
+          <p className="text-xl">
+            You scored{" "}
+            <AnimatedNumber
+              end={points}
+              className="text-blue-700"
+              duration={2.5}
+            />{" "}
+            this round!
+          </p>
           <a
             rel="noreferrer"
             target="_blank"
@@ -108,12 +136,12 @@ function App() {
               ", " +
               c.country[id]
             }
-            className="text-3xl underline hover:text-red-500 text-slate-900"
+            className="text-xl underline hover:text-red-500 text-slate-900"
           >
             {c.city_ascii[id]}, {c.admin_name[id] && c.admin_name[id] + ", "}{" "}
             {c.country[id]}
           </a>
-          <p className="text-lg">Metro Population of {c.population[id]}</p>
+          <p className="text-sm">Metro Population of {c.population[id]}</p>
           <button
             onClick={() => {
               setSelected(null);
@@ -121,45 +149,48 @@ function App() {
               setEnd(false);
               setId(randomId());
               setGuesses([]);
+              setPtsnum(0);
             }}
-            className="px-4 py-2 text-xl text-white bg-blue-700 hover:bg-blue-500"
+            className="px-4 py-2 text-lg text-white bg-blue-700 rounded-lg hover:bg-blue-500"
           >
             Play again
           </button>
         </div>
       )}
 
-      {guesses.length > 0 &&
-        guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
-          <div className="fixed z-40 flex items-end p-2 overflow-y-auto max-h-80 max-w-40 md:max-w-80 top-2 left-2">
-            <div className="flex flex-col flex-wrap items-start gap-1">
-              {/* right continent */}
-              {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
+      {guesses.length >= 0 && (
+        <div className="fixed z-40 flex items-end p-2 overflow-y-auto max-h-80 max-w-40 md:max-w-80 top-2 left-2">
+          <div className="z-30 flex flex-col flex-wrap items-start gap-1">
+            <p className="z-40 p-2 px-2 py-1 text-3xl text-green-800 rounded-lg bg-[#ffffffdd]">
+              <AnimatedNumber end={points} start={prevpoints} duration={1.5} />{" "}
+            </p>
+            {/* right continent */}
+            {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
+              <p className="z-30 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                {c.continent[id]}
+              </p>
+            )}
+            {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
+              <p className="z-30 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                {c.region[id]}
+              </p>
+            )}
+            {/* right country */}
+            {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
+              <p className="z-30 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                {c.country[id]}
+              </p>
+            )}
+            {/* right subdivision */}
+            {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
+              guesses.map((i) => c.country[i]).includes(c.country[id]) && (
                 <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
-                  {c.continent[id]}
+                  {c.admin_name[id]}
                 </p>
               )}
-              {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
-                <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
-                  {c.region[id]}
-                </p>
-              )}
-              {/* right country */}
-              {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-                <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
-                  {c.country[id]}
-                </p>
-              )}
-              {/* right subdivision */}
-              {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
-                guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-                  <p className="px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
-                    {c.admin_name[id]}
-                  </p>
-                )}
-            </div>
           </div>
-        )}
+        </div>
+      )}
 
       <button
         onClick={() => {
@@ -169,33 +200,6 @@ function App() {
       >
         give up
       </button>
-
-      <div className="flex flex-row flex-wrap items-center justify-start gap-1 w-96">
-        {/* right continent */}
-        {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
-          <p className="px-2 py-1 text-sm text-white bg-green-800">
-            {c.continent[id]}
-          </p>
-        )}
-        {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
-          <p className="px-2 py-1 text-sm text-white bg-green-800">
-            {c.region[id]}
-          </p>
-        )}
-        {/* right country */}
-        {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-          <p className="px-2 py-1 text-sm text-white bg-green-800">
-            {c.country[id]}
-          </p>
-        )}
-        {/* right subdivision */}
-        {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
-          guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-            <p className="px-2 py-1 text-sm text-white bg-green-800">
-              {c.admin_name[id]}
-            </p>
-          )}
-      </div>
 
       <div className="fixed z-20 gap-4 bottom-2 left-2">
         <div className="">
