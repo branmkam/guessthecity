@@ -11,13 +11,14 @@ import AnimatedNumber from "./components/AnimatedNumber";
 const ids = Object.keys(c["city_ascii"]);
 
 function App() {
-  const [id, setId] = useState(1840014557);
+  const [id, setId] = useState(randomId());
   const [selected, setSelected] = useState(null);
   const lat = c.lat[id];
   const lng = c.lng[id];
   const [ac, setAc] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [end, setEnd] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   function calcPts(guesses) {
     return (
@@ -34,10 +35,11 @@ function App() {
     );
   }
 
-  const calcpts = calcPts(guesses);
   const prevpoints =
-    guesses.length < 1 ? 0 : calcPts(guesses.slice(0, guesses.length - 1));
-  const points = Math.max(0, calcpts);
+    guesses.length < 1
+      ? 0
+      : Math.max(0, calcPts(guesses.slice(0, guesses.length - 1)));
+  const points = Math.max(0, calcPts(guesses));
 
   function randomId() {
     //every region equal chance
@@ -73,7 +75,7 @@ function App() {
   }, [guesses, id]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen ">
+    <div className="flex flex-col items-center justify-center w-screen h-screen font-oxygen ">
       <div className="fixed z-50 top-0 right-0 p-3 text-right flex flex-col rounded-xl bg-[#00000099]">
         <p className="z-50 text-xl font-bold text-right text-green-500 font-catamaran md:text-2xl lg:text-5xl">
           Guess the City
@@ -105,9 +107,20 @@ function App() {
         </div>
       </div>
 
+      {showMap && (
+        <div className="z-50 flex flex-col items-center justify-center bg-white w-80 h-80">
+          <div className="flex flex-col items-center justify-center h-16 p-2 text-center">
+            <p>
+              Use the map to see which countries are in each region.
+            </p>
+          </div>
+          <iframe className="w-full h-64" src="./components/map.html" />
+        </div>
+      )}
+
       {/* give up */}
       {end && (
-        <div className="z-50 flex flex-col items-center justify-center gap-3 p-6 text-center rounded-xl bg-slate-200">
+        <div className="z-50 flex flex-col items-center justify-center gap-3 p-6 text-center rounded-xl bg-[#ccccccee]">
           {guesses.includes(id.toString()) ? (
             <p className="text-4xl text-green-700 font-catamaran">
               You got it in <br /> {guesses.length} guess
@@ -121,7 +134,7 @@ function App() {
             <AnimatedNumber
               end={points}
               className="text-blue-700"
-              duration={2.5}
+              duration={1.5}
             />{" "}
             this round!
           </p>
@@ -149,7 +162,6 @@ function App() {
               setEnd(false);
               setId(randomId());
               setGuesses([]);
-              setPtsnum(0);
             }}
             className="px-4 py-2 text-lg text-white bg-blue-700 rounded-lg hover:bg-blue-500"
           >
@@ -172,7 +184,13 @@ function App() {
             )}
             {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
               <p className="z-30 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
-                {c.region[id]}
+                {c.region[id]}{" "}
+                <span
+                  className="font-bold hover:"
+                  onClick={() => setShowMap(true)}
+                >
+                  ( ? )
+                </span>
               </p>
             )}
             {/* right country */}

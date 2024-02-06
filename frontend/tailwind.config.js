@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         catamaran: ["Catamaran", "sans-serif"],
+        oxygen: ["Oxygen", "sans-serif"]
       },
     },
   },
