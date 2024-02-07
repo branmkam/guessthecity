@@ -36,9 +36,9 @@ export default function CityAutocomplete(props) {
                 }}
                 key={"disp" + id}
                 className={
-                  "flex flex-row px-2 justify-between hover:cursor-pointer bg-white hover:text-white hover:bg-blue-600 " +
-                  (guesses.includes(id) &&
-                    " hover:bg-white hover:text-slate-400 text-slate-400 hover:cursor-default")
+                  "flex flex-row px-2 justify-between hover:cursor-pointer bg-white hover:bg-blue-600 " +
+                  (guesses.includes(id) ?
+                    "text-slate-400 hover:text-slate-400 hover:bg-transparent hover:cursor-auto" : " hover:text-white ")
                 }
               >
                 <span className="text-left">{c.city_ascii[id]}</span>

@@ -23,14 +23,14 @@ function App() {
 
   function calcPts(guesses) {
     return (
-      -25 * guesses.length +
+      -20 * guesses.length +
       (guesses.includes(id.toString())
-        ? 1025
+        ? 1020
         : 100 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
           100 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
-          350 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
+          360 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
           (c.admin_name[id]
-            ? 200 *
+            ? 240 *
               guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id])
             : 0))
     );
@@ -125,7 +125,7 @@ function App() {
 
       {/* give up */}
       {end && (
-        <div className="z-50 flex flex-col items-center justify-center gap-3 p-6 text-center rounded-xl bg-[#ccccccee]">
+        <div className="animate-fadein z-50 flex flex-col items-center justify-center gap-3 p-6 text-center rounded-xl md:w-96 bg-[#ccccccee]">
           {guesses.includes(id.toString()) ? (
             <p className="text-4xl text-green-700 font-catamaran">
               You got it in <br /> {guesses.length} guess
@@ -206,7 +206,7 @@ function App() {
               </p>
             )}
             {/* right subdivision */}
-            {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
+            {c.admin_name[id] && guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
               guesses.map((i) => c.country[i]).includes(c.country[id]) && (
                 <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                   {c.admin_name[id]}
