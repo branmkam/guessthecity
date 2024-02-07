@@ -37,9 +37,9 @@ function App() {
       -20 * guesses.length +
       (guesses.includes(id.toString())
         ? 1020
-        : 60 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
+        : 120 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
           120 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
-          120 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
+          160 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
           (c.admin_name[id]
             ? 60 *
               guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id])
