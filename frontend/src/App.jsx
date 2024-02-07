@@ -8,6 +8,8 @@ import L from "leaflet";
 import marker from "./assets/marker.svg";
 import AnimatedNumber from "./components/AnimatedNumber";
 import RegionMap from "./components/RegionMap";
+import haversine from "./utils/haversine";
+import distpts from "./utils/distpts";
 
 const ids = Object.keys(c["city_ascii"]);
 
@@ -21,18 +23,30 @@ function App() {
   const [end, setEnd] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
+  function getDistances(guesses) {
+    return guesses.map((g) => haversine([lat, lng], [c.lat[g], c.lng[g]]));
+  }
+
+  function closestindex(distances) {
+    return distances.indexOf(Math.min(...distances));
+  }
+
+  //closest index
   function calcPts(guesses) {
     return (
       -20 * guesses.length +
       (guesses.includes(id.toString())
         ? 1020
-        : 100 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
-          100 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
-          360 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
+        : 60 * guesses.map((i) => c.continent[i]).includes(c.continent[id]) +
+          120 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
+          120 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
           (c.admin_name[id]
-            ? 240 *
+            ? 100 *
               guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id])
-            : 0))
+            : 0) +
+      (guesses.length > 0
+        ? distpts(getDistances(guesses)[closestindex(getDistances(guesses))])
+        : 0))
     );
   }
 
@@ -182,6 +196,21 @@ function App() {
             <p className="z-40 p-2 px-2 py-1 text-3xl text-green-800 rounded-lg bg-[#ffffffdd]">
               <AnimatedNumber end={points} start={prevpoints} duration={1.5} />{" "}
             </p>
+            {guesses.length > 0 && (
+              <>
+                <p className="text-sm text-white">
+                  Closest:{" "}
+                  {c.city_ascii[guesses[closestindex(getDistances(guesses))]]},{" "}
+                  {c.iso3[guesses[closestindex(getDistances(guesses))]]}
+                </p>
+                <p className="text-sm text-white">
+                  {parseInt(
+                    getDistances(guesses)[closestindex(getDistances(guesses))]
+                  )}{" "}
+                  km
+                </p>
+              </>
+            )}
             {/* right continent */}
             {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
               <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
@@ -206,7 +235,8 @@ function App() {
               </p>
             )}
             {/* right subdivision */}
-            {c.admin_name[id] && guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
+            {c.admin_name[id] &&
+              guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
               guesses.map((i) => c.country[i]).includes(c.country[id]) && (
                 <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                   {c.admin_name[id]}

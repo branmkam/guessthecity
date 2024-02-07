@@ -16,7 +16,6 @@ export default function AnimatedNumber(props) {
       setNum(
         parseInt((erf((3.6477 / duration / 1000) * t - 2) + 1) * 0.5 * (end-start) + start + 0.5)
       );
-      console.log(t, Math.abs(num - end), num, start, end);
       setT((ot) => ot + dx);
     } else {
       setNum(num);
