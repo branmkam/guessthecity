@@ -41,12 +41,14 @@ function App() {
           120 * guesses.map((i) => c.region[i]).includes(c.region[id]) +
           120 * guesses.map((i) => c.country[i]).includes(c.country[id]) +
           (c.admin_name[id]
-            ? 100 *
+            ? 60 *
               guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id])
             : 0) +
-      (guesses.length > 0
-        ? distpts(getDistances(guesses)[closestindex(getDistances(guesses))])
-        : 0))
+          (guesses.length > 0
+            ? distpts(
+                getDistances(guesses)[closestindex(getDistances(guesses))]
+              )
+            : 0))
     );
   }
 
@@ -78,7 +80,7 @@ function App() {
       if (lat && lng) {
         map.panTo([lat, lng]);
       }
-    }, [lat, lng, map]);
+    }, [map]);
     return null;
   };
 
@@ -197,19 +199,19 @@ function App() {
               <AnimatedNumber end={points} start={prevpoints} duration={1.5} />{" "}
             </p>
             {guesses.length > 0 && (
-              <>
+              <div className= "p-2 bg-black rounded-lg">
                 <p className="text-sm text-white">
                   Closest:{" "}
-                  {c.city_ascii[guesses[closestindex(getDistances(guesses))]]},{" "}
-                  {c.iso3[guesses[closestindex(getDistances(guesses))]]}
-                </p>
-                <p className="text-sm text-white">
                   {parseInt(
                     getDistances(guesses)[closestindex(getDistances(guesses))]
                   )}{" "}
                   km
                 </p>
-              </>
+                <p className="text-sm font-bold text-white">
+                  ({c.city_ascii[guesses[closestindex(getDistances(guesses))]]},{" "}
+                  {c.iso3[guesses[closestindex(getDistances(guesses))]]})
+                </p>
+              </div>
             )}
             {/* right continent */}
             {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
