@@ -109,10 +109,15 @@ function App() {
       </div>
 
       {showMap && !end && (
-        <div className="z-50 flex flex-col gap-3 items-center justify-center p-4 bg-[#ffffffdd] w-4ull rounded-xl sm:w-1/2 h-80">
-        <div className="flex flex-row justify-between w-full gap-2">
-          <p>Mouse over a country to see the region it's categorized in.</p>
-          <p onClick={() => setShowMap(false)} className="hover:text-red-500 hover:cursor-pointer">x</p>
+        <div className="z-50 flex flex-col md:flex-row gap-3 items-center justify-between p-4 bg-[#ffffffdd] w-5/6 rounded-xl sm:w-1/2 h-[350px]">
+          <div className="flex flex-row items-center justify-between w-full gap-2 text-center md:flex-col">
+            <p>Mouse over a country to see the region it's categorized in.</p>
+            <button
+              onClick={() => setShowMap(false)}
+              className="px-4 py-2 text-white bg-blue-700 rounded-lg hover:bg-blue-400 hover:cursor-pointer"
+            >
+              Back
+            </button>
           </div>
           <RegionMap className="h-64" />
         </div>
@@ -179,12 +184,12 @@ function App() {
             </p>
             {/* right continent */}
             {guesses.map((i) => c.continent[i]).includes(c.continent[id]) && (
-              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                 {c.continent[id]}
               </p>
             )}
             {guesses.map((i) => c.region[i]).includes(c.region[id]) && (
-              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                 {c.region[id]}{" "}
                 <span
                   className="font-bold hover:cursor-pointer hover:text-red-500"
@@ -196,14 +201,14 @@ function App() {
             )}
             {/* right country */}
             {guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+              <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                 {c.country[id]}
               </p>
             )}
             {/* right subdivision */}
             {guesses.map((i) => c.admin_name[i]).includes(c.admin_name[id]) &&
               guesses.map((i) => c.country[i]).includes(c.country[id]) && (
-                <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg">
+                <p className="z-10 px-2 py-1 text-sm text-white bg-green-800 rounded-lg animate-fadein">
                   {c.admin_name[id]}
                 </p>
               )}
