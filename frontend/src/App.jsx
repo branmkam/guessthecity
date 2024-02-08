@@ -98,7 +98,7 @@ function App() {
           Guess the City
         </p>
         <a
-          href="#"
+          href="https://brandonkaminski.dev"
           rel="noreferrer"
           target="_blank"
           className="pt-1 pb-3 text-sm text-blue-400 underline hover:text-blue-200"
