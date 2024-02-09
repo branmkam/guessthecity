@@ -96,14 +96,14 @@ function App() {
     }
   }, [guesses, id]);
 
-  function escFunction(e) {
-    if (e.key === "Escape") {
-      setShowSettings(false);
-      setShowMap(false);
-    }
-  }
-
   useEffect(() => {
+    function escFunction(e) {
+      if (e.key === "Escape") {
+        setShowSettings(false);
+        setShowMap(false);
+      }
+    }
+
     window.addEventListener("keydown", escFunction);
     return () => window.removeEventListener("keydown", escFunction);
   });
@@ -313,7 +313,7 @@ function App() {
         </div>
       )}
 
-      <div className="fixed z-40 flex flex-row gap-3 bottom-6 right-2">
+      <div className="fixed z-40 flex flex-col gap-3 md:flex-row bottom-6 right-2">
         <button
           onClick={() => {
             setShowSettings(!end);
