@@ -14,14 +14,17 @@ import distpts from "./utils/distpts";
 const ids = Object.keys(c["city_ascii"]);
 
 function App() {
-  const [id, setId] = useState(randomId());
+  const [minPop, setMinPop] = useState(200000);
+  const [id, setId] = useState(randomId(200000));
   const [selected, setSelected] = useState(null);
-  const lat = c.lat[id];
-  const lng = c.lng[id];
   const [ac, setAc] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [end, setEnd] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [showSettings, setShowSettings] = useState(true);
+
+  const lat = c.lat[id];
+  const lng = c.lng[id];
 
   function getDistances(guesses) {
     return guesses.map((g) => haversine([lat, lng], [c.lat[g], c.lng[g]]));
@@ -58,11 +61,13 @@ function App() {
       : Math.max(0, calcPts(guesses.slice(0, guesses.length - 1)));
   const points = Math.max(0, calcPts(guesses));
 
-  function randomId() {
+  function randomId(minPop = 200000) {
+    let valids = ids.filter((i) => c.population[i] >= minPop);
     //every region equal chance
-    const areas = Array.from(new Set(Object.values(c.admin_name)));
+    const areas = Array.from(new Set(valids.map((v) => c.region[v])));
     let area = areas[parseInt(Math.random() * areas.length)];
-    let cities = ids.filter((i) => c.admin_name[i] == area);
+    //must have required pop
+    let cities = valids.filter((i) => c.region[i] == area);
     let chosen = cities[parseInt(Math.random() * cities.length)];
     return chosen;
   }
@@ -90,6 +95,18 @@ function App() {
       setEnd(true);
     }
   }, [guesses, id]);
+
+  function escFunction(e) {
+    if (e.key === "Escape") {
+      setShowSettings(false);
+      setShowMap(false);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", escFunction);
+    return () => window.removeEventListener("keydown", escFunction);
+  });
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen font-oxygen ">
@@ -123,6 +140,54 @@ function App() {
           ))}
         </div>
       </div>
+
+      {showSettings && (
+        <div className="z-50 flex flex-col gap-3 items-center justify-center p-4 bg-[#ffffffdd] w-5/6 rounded-xl sm:w-1/2 h-[350px]">
+          <div className="flex flex-col items-center justify-between w-full gap-4 text-center">
+            <p className="text-4xl font-bold text-slate-900">Settings</p>
+            <span>
+              Minimum Population: {minPop} (
+              {ids.filter((i) => c.population[i] >= minPop).length} cities){" "}
+            </span>
+            <input
+              className="w-3/4"
+              onChange={(e) => {
+                setMinPop(e.target.value);
+                setSelected(null);
+                setAc("");
+              }}
+              value={minPop}
+              type="range"
+              min="200000"
+              max="3000000"
+              step="100000"
+            />
+            <span className="flex flex-row gap-4">
+              <button
+                onClick={() => {
+                  setSelected(null);
+                  setAc("");
+                  setEnd(false);
+                  setId(randomId(minPop));
+                  setShowMap(false);
+                  setShowSettings(false);
+                }}
+                className="px-4 py-2 text-lg text-white bg-blue-700 rounded-lg hover:bg-blue-500"
+              >
+                update
+              </button>
+              <button
+                onClick={() => {
+                  setShowSettings(false);
+                }}
+                className="px-4 py-2 text-lg text-white bg-red-700 rounded-lg hover:bg-red-500"
+              >
+                cancel
+              </button>
+            </span>
+          </div>
+        </div>
+      )}
 
       {showMap && !end && (
         <div className="z-50 flex flex-col md:flex-row gap-3 items-center justify-between p-4 bg-[#ffffffdd] w-5/6 rounded-xl sm:w-1/2 h-[350px]">
@@ -181,13 +246,13 @@ function App() {
               setSelected(null);
               setAc("");
               setEnd(false);
-              setId(randomId());
+              setId(randomId(minPop));
               setGuesses([]);
               setShowMap(false);
             }}
             className="px-4 py-2 text-lg text-white bg-blue-700 rounded-lg hover:bg-blue-500"
           >
-            Play again
+            play again
           </button>
         </div>
       )}
@@ -199,7 +264,7 @@ function App() {
               <AnimatedNumber end={points} start={prevpoints} duration={1.5} />{" "}
             </p>
             {guesses.length > 0 && (
-              <div className= "p-2 bg-black rounded-lg">
+              <div className="p-2 bg-black rounded-lg">
                 <p className="text-sm text-white">
                   Closest:{" "}
                   {parseInt(
@@ -248,25 +313,37 @@ function App() {
         </div>
       )}
 
-      <button
-        onClick={() => {
-          setEnd(true);
-        }}
-        className="fixed z-40 px-4 py-2 text-white bg-red-600 rounded-lg bottom-6 right-2 hover:bg-red-800 "
-      >
-        give up
-      </button>
+      <div className="fixed z-40 flex flex-row gap-3 bottom-6 right-2">
+        <button
+          onClick={() => {
+            setShowSettings(!end);
+          }}
+          className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-800 "
+        >
+          settings
+        </button>
+        <button
+          onClick={() => {
+            setEnd(true);
+            setShowSettings(false);
+            setShowMap(false);
+          }}
+          className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-800 "
+        >
+          give up
+        </button>
+      </div>
 
       <div className="fixed z-20 gap-4 bottom-2 left-2">
         <div className="">
           <CityAutocomplete
             value={ac}
             setValue={setAc}
-            c={c}
             onChange={(e) => {
               setAc(e.target.value);
               setSelected(null);
             }}
+            minPop={minPop}
             setSelected={setSelected}
             selected={selected}
             guesses={guesses}

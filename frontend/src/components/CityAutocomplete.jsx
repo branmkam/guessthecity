@@ -1,8 +1,8 @@
 import { useState } from "react";
+import c from "../../../data/worldcities.json";
 
 export default function CityAutocomplete(props) {
   const {
-    c,
     value,
     setValue,
     onChange,
@@ -10,6 +10,7 @@ export default function CityAutocomplete(props) {
     setSelected,
     guesses,
     setGuesses,
+    minPop,
   } = props;
 
   let ids = Object.keys(c.city_ascii);
@@ -25,6 +26,8 @@ export default function CityAutocomplete(props) {
                 .toLowerCase()
                 .includes(value.trim().toLowerCase())
             )
+            .filter((id) => c.population[id] >= minPop)
+            .toSorted((a, b) => c.city_ascii[b] - c.city_ascii[a])
             .map((id) => (
               <div
                 onClick={() => {
@@ -37,12 +40,14 @@ export default function CityAutocomplete(props) {
                 key={"disp" + id}
                 className={
                   "flex flex-row px-2 justify-between hover:cursor-pointer bg-white hover:bg-blue-600 " +
-                  (guesses.includes(id) ?
-                    "text-slate-400 hover:text-slate-400 hover:bg-transparent hover:cursor-auto" : " hover:text-white ")
+                  // (c.population[id] < minPop ? " text-red-600 " : " text-green-900 ") +
+                  (guesses.includes(id)
+                    ? "text-slate-400 hover:text-slate-400 hover:bg-transparent hover:cursor-auto"
+                    : " hover:text-white ")
                 }
               >
                 <span className="text-left">{c.city_ascii[id]}</span>
-                <span className='text-right'>
+                <span className="text-right">
                   {(c.admin_name[id] && c.admin_name[id] + ", ") +
                     c.country[id]}
                 </span>
